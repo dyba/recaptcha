@@ -1,6 +1,6 @@
 # coding: utf-8
 
-require 'test/unit'
+require 'minitest/autorun'
 require 'rubygems'
 require 'active_support'
 require 'active_support/core_ext/string'
@@ -9,7 +9,7 @@ require 'i18n'
 require 'net/http'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
-class TestRecaptchaVerify < Test::Unit::TestCase
+class TestRecaptchaVerify < MiniTest::Unit::TestCase
   def setup
     Recaptcha.configuration.private_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     @controller = TestController.new
@@ -28,7 +28,7 @@ class TestRecaptchaVerify < Test::Unit::TestCase
   def test_should_raise_exception_when_calling_bang_method
     @controller.expects(:verify_recaptcha).returns(false)
 
-    assert_raise Recaptcha::VerifyError do
+    assert_raises Recaptcha::VerifyError do
       @controller.verify_recaptcha!
     end
   end
@@ -40,7 +40,7 @@ class TestRecaptchaVerify < Test::Unit::TestCase
   end
 
   def test_should_raise_exception_without_private_key
-    assert_raise Recaptcha::RecaptchaError do
+    assert_raises Recaptcha::RecaptchaError do
       Recaptcha.configuration.private_key = nil
       @controller.verify_recaptcha
     end
@@ -91,7 +91,7 @@ class TestRecaptchaVerify < Test::Unit::TestCase
   def test_timeout_when_handle_timeouts_gracefully_disabled
     Recaptcha.with_configuration(:handle_timeouts_gracefully => false) do
       expect_http_post(Timeout::Error, :exception => true)
-      assert_raise Recaptcha::RecaptchaError, "Recaptcha unreachable." do
+      assert_raises Recaptcha::RecaptchaError, "Recaptcha unreachable." do
         assert @controller.verify_recaptcha()
       end
       assert_nil @controller.flash[:recaptcha_error]

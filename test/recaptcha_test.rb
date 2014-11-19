@@ -1,8 +1,8 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'cgi'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
-class TestRecaptchaClientHelper < Test::Unit::TestCase
+class TestRecaptchaClientHelper < MiniTest::Unit::TestCase
   include Recaptcha
   include Recaptcha::ClientHelper
   include Recaptcha::Verify
@@ -37,11 +37,11 @@ class TestRecaptchaClientHelper < Test::Unit::TestCase
   end
 
   def test_recaptcha_tags_without_noscript
-    assert_no_match /noscript/, recaptcha_tags(:noscript => false)
+    refute_match /noscript/, recaptcha_tags(:noscript => false)
   end
 
   def test_should_raise_exception_without_public_key
-    assert_raise RecaptchaError do
+    assert_raises RecaptchaError do
       Recaptcha.configuration.public_key = nil
       recaptcha_tags
     end

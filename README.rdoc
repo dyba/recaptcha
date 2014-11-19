@@ -1,4 +1,5 @@
 = reCAPTCHA
+{<img src="https://travis-ci.org/dyba/recaptcha.svg?branch=add-travis-ci" alt="Build Status" />}[https://travis-ci.org/dyba/recaptcha]
 
 Author::    Jason L Perry (http://ambethia.com)
 Copyright:: Copyright (c) 2007-2013 Jason L Perry
