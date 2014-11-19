@@ -2,7 +2,7 @@ require 'test/unit'
 require 'cgi'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
-class RecaptchaClientHelperTest < Test::Unit::TestCase
+class TestRecaptchaClientHelper < Test::Unit::TestCase
   include Recaptcha
   include Recaptcha::ClientHelper
   include Recaptcha::Verify
