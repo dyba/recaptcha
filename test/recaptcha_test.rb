@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'cgi'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
-class TestRecaptchaClientHelper < MiniTest::Unit::TestCase
+class TestRecaptchaClientHelper < Minitest::Test
   include Recaptcha
   include Recaptcha::ClientHelper
   include Recaptcha::Verify

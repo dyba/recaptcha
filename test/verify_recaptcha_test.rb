@@ -9,7 +9,7 @@ require 'i18n'
 require 'net/http'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
-class TestRecaptchaVerify < MiniTest::Unit::TestCase
+class TestRecaptchaVerify < Minitest::Test
   def setup
     Recaptcha.configuration.private_key = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     @controller = TestController.new
