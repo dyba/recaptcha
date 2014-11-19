@@ -1,5 +1,6 @@
 require 'net/http'
 require 'recaptcha'
+
 module Rails
   module Recaptcha
     class Railtie < Rails::Railtie
@@ -12,4 +13,3 @@ module Rails
     end
   end
 end
-
