@@ -7,6 +7,7 @@ require 'active_support/core_ext/string'
 require 'mocha/setup'
 require 'i18n'
 require 'net/http'
+require 'pry'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
 class TestRecaptchaVerify < Minitest::Test
@@ -23,6 +24,11 @@ class TestRecaptchaVerify < Minitest::Test
     @expected_post_data["response"]   = "response"
 
     @expected_uri = URI.parse(Recaptcha.configuration.verify_url)
+  end
+
+  def teardown
+    @expected_post_data = {}
+    @expected_uri = nil
   end
 
   def test_should_raise_exception_when_calling_bang_method
@@ -84,7 +90,7 @@ class TestRecaptchaVerify < Minitest::Test
 
   def test_timeout
     expect_http_post(Timeout::Error, :exception => true)
-    assert !@controller.verify_recaptcha()
+    assert !@controller.verify_recaptcha
     assert_equal "Recaptcha unreachable.", @controller.flash[:recaptcha_error]
   end
 
