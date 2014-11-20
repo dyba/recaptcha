@@ -3,6 +3,8 @@ require 'recaptcha/client_helper'
 require 'recaptcha/verify'
 
 module RecaptchaV1
+  class MissingPrivateKeyError < StandardError; end
+
   class Configuration
     RECAPTCHA_API_SERVER_URL = 'http://www.google.com/recaptcha/api'
     RECAPTCHA_API_SECURE_SERVER_URL = 'https://www.google.com/recaptcha/api'
@@ -10,10 +12,18 @@ module RecaptchaV1
 
     attr_accessor :handle_timeouts_gracefully
     attr_accessor :use_ssl
+    attr_accessor :private_key
+    attr_accessor :proxy_server
+    attr_accessor :proxy_server_username
+    attr_accessor :proxy_server_password
 
     def reset
       @handle_timeouts_gracefully = true
       @use_ssl = false
+    end
+
+    def validate!
+      raise MissingPrivateKeyError, "The private key is missing." if @private_key.nil?
     end
   end
 
@@ -34,6 +44,7 @@ module RecaptchaV1
   end
 
   class HTTPClient
+    # Here, you'll decide if you'll be using a proxy or not
     def initialize(private_key: '', timeout: 3, challenge: '', response: '')
       @private_key = private_key
       @timeout = timeout

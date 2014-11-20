@@ -33,10 +33,22 @@ class RecaptchaConfigTest < Minitest::Test
     Recaptcha.setup do |config|
       config.handle_timeouts_gracefully = false
       config.use_ssl = true
+      config.proxy_server = 'http://myproxy.org:3030/'
+      config.proxy_server_username = "simple-user"
+      config.proxy_server_password = "password"
     end
 
     refute Recaptcha.config.handle_timeouts_gracefully
     assert Recaptcha.config.use_ssl
+    assert_equal Recaptcha.config.proxy_server, 'http://myproxy.org:3030/'
+    assert_equal Recaptcha.config.proxy_server_username, "simple-user"
+    assert_equal Recaptcha.config.proxy_server_password, "password"
+  end
+
+  def test_raises_exception_when_validating_config_with_missing_private_key
+    assert_raises MissingPrivateKeyError do
+      Recaptcha.config.validate!
+    end
   end
 end
 
