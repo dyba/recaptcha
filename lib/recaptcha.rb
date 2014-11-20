@@ -2,6 +2,50 @@ require 'recaptcha/configuration'
 require 'recaptcha/client_helper'
 require 'recaptcha/verify'
 
+module RecaptchaV1
+  class Configuration
+    RECAPTCHA_API_SERVER_URL = 'http://www.google.com/recaptcha/api'
+    RECAPTCHA_API_SECURE_SERVER_URL = 'https://www.google.com/recaptcha/api'
+    RECAPTCHA_API_VERIFY_URL = 'http://www.google.com/recaptcha/api/verify'
+
+    attr_accessor :handle_timeouts_gracefully
+    attr_accessor :use_ssl
+
+    def reset
+      @handle_timeouts_gracefully = true
+      @use_ssl = false
+    end
+  end
+
+  class Recaptcha
+    class << self
+      def verify(challenge: '', response: '')
+        true
+      end
+
+      def config
+        @config ||= Configuration.new
+      end
+
+      def setup(&block)
+        yield self.config if block_given?
+      end
+    end
+  end
+
+  class HTTPClient
+    def initialize(private_key: '', timeout: 3, challenge: '', response: '')
+      @private_key = private_key
+      @timeout = timeout
+      @challenge = challenge
+      @response = response
+    end
+
+    def validate_recaptcha
+    end
+  end
+end
+
 module Recaptcha
   RECAPTCHA_API_SERVER_URL        = '//www.google.com/recaptcha/api'
   RECAPTCHA_API_SECURE_SERVER_URL = 'https://www.google.com/recaptcha/api'

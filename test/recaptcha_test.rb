@@ -2,6 +2,55 @@ require 'minitest/autorun'
 require 'cgi'
 require File.dirname(File.expand_path(__FILE__)) + '/../lib/recaptcha'
 
+class HTTPClientTest < Minitest::Test
+  include RecaptchaV1
+
+  def setup
+    @client = HTTPClient.new
+  end
+
+  def test_client_is_not_nil
+    assert !@client.nil?
+  end
+end
+
+class RecaptchaConfigTest < Minitest::Test
+  include RecaptchaV1
+
+  def setup
+    Recaptcha.config.reset
+  end
+
+  def test_handles_timeouts_gracefully_by_default
+    assert Recaptcha.config.handle_timeouts_gracefully
+  end
+
+  def test_doesnt_use_ssl_by_default
+    refute Recaptcha.config.use_ssl
+  end
+
+  def test_can_override_defaults
+    Recaptcha.setup do |config|
+      config.handle_timeouts_gracefully = false
+      config.use_ssl = true
+    end
+
+    refute Recaptcha.config.handle_timeouts_gracefully
+    assert Recaptcha.config.use_ssl
+  end
+end
+
+class RecaptchaTest < Minitest::Test
+  include RecaptchaV1
+
+  def setup
+  end
+
+  def test_verify_returns_true
+    assert Recaptcha.verify
+  end
+end
+
 class RecaptchaClientHelperTest < Minitest::Test
   include Recaptcha
   include Recaptcha::ClientHelper
